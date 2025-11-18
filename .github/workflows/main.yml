@@ -1,0 +1,33 @@
+name: Daily Orchestrator Runner
+
+on:
+  schedule:
+    - cron: '10 0 * * *'  # Every day at 00:10 UTC
+  workflow_dispatch:       # Optional manual trigger
+
+jobs:
+  run-orchestrator:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python 3.13
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13.5'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install --upgrade pip
+            pip install -r requirements.txt
+          fi
+
+      # Step 4: Run orchestrator.py
+      - name: Run orchestrator.py
+        run: python orchestrator.PY
